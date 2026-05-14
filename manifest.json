@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "DipMeet",
+  "version": "1.1.0",
+  "description": "Schedule meetings to open and leave on time, or set a timer to auto-close the current tab.",
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "notifications",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://calendar.google.com/*",
+    "https://meet.google.com/*",
+    "https://teams.microsoft.com/*",
+    "https://*.zoom.us/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "src/assets/DipmeetLogoNoBG-16.png",
+    "24": "src/assets/DipmeetLogoNoBG-24.png",
+    "32": "src/assets/DipmeetLogoNoBG-32.png",
+    "48": "src/assets/DipmeetLogoNoBG-48.png",
+    "64": "src/assets/DipmeetLogoNoBG-64.png",
+    "96": "src/assets/DipmeetLogoNoBG-96.png",
+    "128": "src/assets/DipmeetLogoNoBG-128.png"
+  },
+  "action": {
+    "default_title": "DipMeet",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "src/assets/DipmeetLogoNoBG-16.png",
+      "24": "src/assets/DipmeetLogoNoBG-24.png",
+      "32": "src/assets/DipmeetLogoNoBG-32.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "fonts/*.woff2"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

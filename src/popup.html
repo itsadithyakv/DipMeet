@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DipMeet</title>
+    <link rel="stylesheet" href="./popup.css">
+  </head>
+  <body>
+    <main class="app-shell" id="app">
+      <section class="hero-card">
+        <img class="brand-logo" src="./assets/DipmeetLogoNoBG-32.png" alt="DipMeet logo">
+        <div class="brand-wordmark" aria-label="DipMeet">
+          <span class="brand-dip">Dip</span>
+          <span class="brand-meet">Meet</span>
+        </div>
+      </section>
+
+      <section class="status-card" id="status-card">
+        <div class="tab-chip" id="selected-tab-chip">
+          <img class="tab-favicon hidden" id="selected-tab-favicon" alt="">
+          <span class="tab-chip-dot" id="selected-tab-fallback"></span>
+          <div class="tab-chip-copy">
+            <strong id="selected-tab-title">Choose a tab</strong>
+            <span id="selected-tab-subtitle">Meeting, YouTube, Spotify, or any normal tab</span>
+          </div>
+        </div>
+
+        <div class="timer-stage">
+          <div class="ring-picker-shell">
+            <div class="progress-ring" id="progress-ring" role="slider" aria-label="Circular time picker">
+              <div class="progress-ring-knob" id="progress-ring-knob" aria-hidden="true"></div>
+              <div class="progress-ring-inner" id="progress-ring-inner">
+                <p class="ring-label" id="ring-label">Ready</p>
+                <strong id="time-left">15:00</strong>
+                <div class="ring-mode-switch" id="ring-mode-switch">
+                  <button class="ring-mode-button is-active" id="pick-hours" type="button">Hours</button>
+                  <button class="ring-mode-button" id="pick-minutes" type="button">Minutes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="countdown-row">
+            <div class="timer-meta-card">
+              <p class="label">Status</p>
+              <strong id="status-pill">Idle</strong>
+            </div>
+            <div class="timer-meta-card">
+              <p class="label">Closes at</p>
+              <strong id="close-at">--:--</strong>
+            </div>
+          </div>
+
+          <button class="primary-button" id="start-timer" type="button">Start timer</button>
+
+          <div id="timer-empty" class="empty-state">
+            Adjust the ring to set hours and minutes for the current tab.
+          </div>
+
+          <div id="timer-live" class="timer-live hidden">
+            <p class="live-url" id="live-url"></p>
+            <div class="timer-live-actions">
+              <button class="ghost-button" id="add-five-minutes" type="button">+5 min</button>
+              <button class="ghost-button cancel-button" id="cancel-timer" type="button">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="meeting-card">
+        <div class="section-head">
+          <span>Join at</span>
+          <span class="muted" id="meeting-platform-badge">No link</span>
+        </div>
+
+        <label class="field">
+          <span class="field-label">Meeting link</span>
+          <input class="text-input" id="meeting-url" type="url" placeholder="https://meet.google.com/...">
+        </label>
+
+        <div class="input-grid">
+          <label class="field">
+            <span class="field-label">Join at</span>
+            <input class="text-input" id="meeting-join-at" type="datetime-local">
+          </label>
+          <label class="field">
+            <span class="field-label">Leave at</span>
+            <input class="text-input" id="meeting-leave-at" type="datetime-local">
+          </label>
+        </div>
+
+        <div class="meeting-actions">
+          <button class="secondary-button" id="import-calendar" type="button">Use Google Calendar</button>
+          <button class="primary-button compact" id="schedule-meeting" type="button">Schedule meeting</button>
+        </div>
+
+        <div class="meeting-queue hidden" id="meeting-queue">
+          <div class="section-head slim">
+            <span>Scheduled meetings</span>
+          </div>
+          <div class="queue-list" id="queue-list"></div>
+        </div>
+
+        <div class="meeting-session hidden" id="meeting-session">
+          <div class="section-head slim">
+            <span id="meeting-session-title">Upcoming meeting</span>
+            <button class="icon-button" id="cancel-meeting-job" type="button" aria-label="Cancel meeting schedule" title="Cancel meeting schedule">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18"></path>
+              </svg>
+            </button>
+          </div>
+          <p class="meeting-session-url" id="meeting-session-url"></p>
+          <div class="countdown-row">
+            <div class="timer-meta-card">
+              <p class="label">Join</p>
+              <strong id="meeting-session-join-at">--</strong>
+            </div>
+            <div class="timer-meta-card">
+              <p class="label">Leave</p>
+              <strong id="meeting-session-leave-at">--</strong>
+            </div>
+          </div>
+          <p class="meeting-session-status" id="meeting-session-status">No scheduled meeting.</p>
+        </div>
+      </section>
+
+      <section class="history-sheet hidden" id="history-sheet">
+        <div class="section-head">
+          <span>Recent activity</span>
+          <button class="icon-button" id="close-history" type="button" aria-label="Close history" title="Close history">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="history-list" id="history-list"></div>
+      </section>
+
+      <footer class="footer-bar">
+        <button class="footer-button" id="history-toggle" type="button" aria-label="Open history" title="History">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 8v5l3 2"></path>
+            <path d="M21 12a9 9 0 10-3.2 6.9"></path>
+          </svg>
+        </button>
+        <button class="footer-button" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 14.5A7.5 7.5 0 1110.5 5 6 6 0 0020 14.5z"></path>
+          </svg>
+          <svg class="theme-icon theme-icon-sun hidden" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77"></path>
+          </svg>
+        </button>
+      </footer>
+    </main>
+
+    <script type="module" src="./popup.js"></script>
+  </body>
+</html>
